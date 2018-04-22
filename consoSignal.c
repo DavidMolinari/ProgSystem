@@ -10,15 +10,6 @@
 struct sigaction action;
 #define couleur(param) printf("\033[%sm",param)
 #define max 10
-int semid;
-
-
-void fct_signalint(int sig){
-  printf("SIGINT\n" );
-  semctl(semid, 0, IPC_RMID);
-  semctl(semid, 1, IPC_RMID);
-}
-
 
 int P(int semid, int ns){
   struct sembuf oper;
@@ -44,16 +35,8 @@ int V(int semid, int ns){
 }
 
 int main(int argc, char *argv[]){
-
-
-  struct sigaction action;
-  action.sa_handler = fct_signalint;
-  action.sa_flags = 0;
-  sigemptyset(&action.sa_mask);
-  sigaction(SIGINT, &action, NULL);
-
-
-  int i, status; pid_t retour;
+  printf("Meeeeeeeeeeeeeeeh\n");
+  int semid, i, status; pid_t retour;
 
 
   if((semid=semget(IPC_PRIVATE, 2, IPC_CREAT|IPC_EXCL|0600)) == -1){
@@ -61,6 +44,15 @@ int main(int argc, char *argv[]){
     exit(1);
   }
   // Init des 2 sémaphore
+
+  sigset_t ens1; int sig;
+
+  sigemptyset(&ens1);
+  sigaddset(&ens1, SIGINT);
+  sigaddset(&ens1, SIGQUIT);
+  sigaddset(&ens1, SIGUSR1);
+  sigprocmask(SIG_SETMASK, &ens1, NULL);
+
 
   semctl(semid, 0, SETVAL, 0);
   semctl(semid, 1, SETVAL, 10);
@@ -75,27 +67,25 @@ int main(int argc, char *argv[]){
         case 1:
         while(1){
           couleur("32");
-          printf("> [ Producteur ]                              START \n");
+          printf("> [ Producteur ]                              START \n");
           sleep(1);
           P(semid, 1);
           V(semid, 0);
+          char m = "▀";
           printf("STOCK : " );
           for (int i = 1; i <=semctl(semid, 0, GETVAL, 0); i++) printf("▀ ");
-          printf("=> %d \n> [ Producteur ]                              STOP \n", semctl(semid, 0, GETVAL, 0));
-          couleur("0");
-
+          printf("=> %d \n> [ Producteur ]                              STOP \n", semctl(semid, 0, GETVAL, 0));
         }
         case 2:
         while(1){
           couleur("31");
-          printf("> [ Consommateur ]                            START \n");
+          printf("> [ Consommateur ]                            START \n");
           P(semid, 0);
           V(semid, 1);
           sleep(3);
           printf("STOCK : " );
           for (int i = 1; i <=semctl(semid, 0, GETVAL, 0); i++) printf("▀ ");
-          printf("=> %d \n> [ Consommateur ]                            STOP \n", semctl(semid, 0, GETVAL, 0));
-          couleur("0");
+          printf("=> %d \n> [ Consommateur ]                            STOP \n", semctl(semid, 0, GETVAL, 0));
 
         }
       }
