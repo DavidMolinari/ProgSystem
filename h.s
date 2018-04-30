@@ -6,7 +6,7 @@ do
 	git add -A
 	a="Mon may "
 	b=$i
-	c=" 05:00 2018 +0530"
+	c=" 5:00 2018 +0530"
 	export GIT_AUTHOR_DATE=$a$b$c
 	export GIT_COMMITTER_DATE=$a$b$c
 	git commit -am "`echo ${list[$RANDOM % ${#list[@]} ]}`"
