@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int main(){
+int main(void){
   int dad = 0, status; // papa
   for (int i = 0; i < 1000; i++) {
     if(dad == 0){
@@ -14,4 +14,5 @@ int main(){
       printf("PROCESSUS : %d PID=%d - CREE PAR LE PAPA: %d\n",i+1,getpid(), getppid());
     }
   }
+  return -1;
 }
