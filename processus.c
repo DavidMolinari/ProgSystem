@@ -4,7 +4,7 @@
 #include <sys/wait.h>
 
 
-int main(){
+int main(void){
 
   int ret, a = 17, status;
   ret = fork();
@@ -20,9 +20,12 @@ int main(){
     }
   } else {
     while(1) {
+
+
       sleep(1);
       printf("Je suis le fils : %d\n",a );
       printf("pid fils : %d\n",pid );
     }
   }
+}
 }
