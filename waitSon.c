@@ -19,5 +19,8 @@ int main(){
       pidfils = wait(&retour);
       printf("MORT DU FILS PID=%d\n",pidfils);
   }
+  if(WIFEXITED(retour)) { printf("Retour : %d\n",WEXITSTATUS(retour) ); exit(0);}
+  if(WIFSIGNALED(retour)) { printf("Kill : %d\n",WTERMSIG(retour) ); exit(0);}
+
 
   }
