@@ -8,5 +8,4 @@ int main(){
   execl("/bin/ps", "ps", "f", NULL);
   perror("execl");
   exit(1);
-
 }
