@@ -10,6 +10,8 @@
 struct sigaction action;
 #define couleur(param) printf("\033[%sm",param)
 #define max 10
+int semid;
+
 
 int P(int semid, int ns){
   struct sembuf oper;
@@ -22,6 +24,13 @@ int P(int semid, int ns){
     exit(3);
   }
 }
+void fct_signalint(int sig){
+  printf("SIGINT\n" );
+  semctl(semid, 0, IPC_RMID);
+  semctl(semid, 1, IPC_RMID);
+}
+
+
 
 int V(int semid, int ns){
   struct sembuf oper;
@@ -33,29 +42,23 @@ int V(int semid, int ns){
     exit(4);
   }
 }
-
 int main(int argc, char *argv[]){
-  printf("Meeeeeeeeeeeeeeeh\n");
-  int semid, i, status; pid_t retour;
 
+
+  printf("Meeeeeeeeeeeeeeeh\n");
+  int i, status; pid_t retour;
+
+struct sigaction action;
+action.sa_handler = fct_signalint;
+action.sa_flags = 0;
+sigemptyset(&action.sa_mask);
+sigaction(SIGINT, &action, NULL);
 
   if((semid=semget(IPC_PRIVATE, 2, IPC_CREAT|IPC_EXCL|0600)) == -1){
     perror("\nErreur de création de sémaphores");
     exit(1);
   }
   // Init des 2 sémaphore
-
-  sigset_t ens1; int sig;
-
-  sigemptyset(&ens1);
-  sigaddset(&ens1, SIGINT);
-  sigaddset(&ens1, SIGQUIT);
-  sigaddset(&ens1, SIGUSR1);
-  sigprocmask(SIG_SETMASK, &ens1, NULL);
-
-
-  semctl(semid, 0, SETVAL, 0);
-  semctl(semid, 1, SETVAL, 10);
 
   for (int i = 1; i <= 2; i++) {
     if((retour=fork()) == -1){
@@ -71,7 +74,6 @@ int main(int argc, char *argv[]){
           sleep(1);
           P(semid, 1);
           V(semid, 0);
-          char m = "▀";
           printf("STOCK : " );
           for (int i = 1; i <=semctl(semid, 0, GETVAL, 0); i++) printf("▀ ");
           printf("=> %d \n> [ Producteur ]                              STOP \n", semctl(semid, 0, GETVAL, 0));
