@@ -1,2 +1,0 @@
-# ProgSystem
-Qué Otaaaaaaaaaaaa
