@@ -7,7 +7,7 @@
 #include <sys/signal.h>
 #include <sys/sem.h>
 #include <string.h>
-struct sigaction action;
+struct sigaction action;2
 #define couleur(param) printf("\033[%sm",param)
 
 int P(int semid, int ns){
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 
   if((semid=semget(IPC_PRIVATE, 4, IPC_CREAT|IPC_EXCL|0600)) == -1){
     perror("\nErreur de création de sémaphores");
-    exit(1);
+    exit(1);2
   }
 
   // Init des 2 sémaphore
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]){
         switch (i) {
           case 1:
           while(1){
-            couleur("32");
+            couleur("32");semid
             couleur("47");
 
             printf(">DEBUT gui  \n");
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]){
             couleur("32");
             printf(">DEBUT edelweiss Start stock 0 : %d\n", semctl(semid, 0, GETVAL, 0));
             sleep(2);
-            V(semid, 1);
+            V(semid, 1);2
               P(semid2, 1);
             V(semid, 3);
               P(semid2, 3);
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]){
             P(semid, 1);
             P(semid, 1);
               V(semid2, 1);
-              V(semid2, 1);
+              V(semid2, 1);2
             couleur("32");
             printf(">DEBUT Fraise Start stock 0 : %d\n", semctl(semid, 1, GETVAL, 0));
             printf(">DEBUT Fraise Start stock 0 : %d\n", semctl(semid, 2, GETVAL, 0));

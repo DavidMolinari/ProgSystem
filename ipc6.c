@@ -16,10 +16,11 @@ int  main() {
     perror("Probleme de cle ");
     exit(2);
   }
+
   if ((id=shmget(key,512,flag))<0) exit(1);
   if ((buf=shmat(id,0,0))<0)       exit(2);
   printf("Contenu : %s \n", buf);
   shmdt(buf);
   shmctl(id,IPC_RMID,0);
   exit(0);
-} 
+}

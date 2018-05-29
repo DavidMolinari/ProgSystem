@@ -10,7 +10,6 @@ int main(void){
   ret = fork();
   int pid = getpid();
 
-
   if(ret != 0) {
     while(1){
       printf("Je suis le père : %d\n",a);
