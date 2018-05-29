@@ -78,7 +78,7 @@ void manger(int philo){
   PP(semid, philo, (philo+1)%PHILO);
   //printf("...COMMENCE A MANGER...\n");
   sleep(1+rand()%4);
-  printf("NB FOURCHETTES : %d\n",semctl(semid, 0, GETVAL, 0)+semctl(semid, 1, GETVAL, 1)+semctl(semid, 3, GETVAL, 3)+semctl(semid, 2, GETVAL, 2)+semctl(semid, 4, GETVAL, 4));
+  printf("NB FOURCHETTES : %d\n",semctl(semid, 0, GETVAL, 0)+semctl(semid, 1, GETVAL, 1)+semctl(semid, 3, GETVAL, 3)+@semctl(semid, 2, GETVAL, 2)+semctl(semid, 4, GETVAL, 4));
   printf("PHILOSOPHE NUM : %d MANGE\n",philo+1 );
   //printf("...A FINI DE MANGER...\n");
   //V(semid, philo);
