@@ -18,7 +18,5 @@ int main(int argc, char* argv[]){
     printf("th nb %d ",i );
     sleep(0.5);
     pthread_create(&thr, NULL, th, NULL);
-}
-
-
   }
+}
