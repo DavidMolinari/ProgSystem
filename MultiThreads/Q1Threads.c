@@ -7,17 +7,18 @@
 
 
 void* th(void *arg){
-  printf("thr : %d , proc : %d\n",pthread_self(), getpid() );
+  printf("thr : %d \n",pthread_self() );
   pthread_exit(NULL);
 }
 
 int main(int argc, char* argv[]){
-  pthread_t id1, id2;
-  pthread_create(&id1, NULL, th, NULL);
-  pthread_create(&id2, NULL, th, NULL);
-  pthread_join(id1, NULL);
-  pthread_join(id2, NULL);
-  printf("fin th principal %d => Processus %d\n",pthread_self(), getpid() );
-  pthread_exit(NULL);
+  pthread_t thr;
+  int nb = 1000;
+  for (int i = 0; i < nb; i++) {
+    printf("th nb %d ",i );
+    sleep(0.5);
+    pthread_create(&thr, NULL, th, NULL);
+}
+
 
   }
