@@ -13,7 +13,6 @@ void* th(void *arg){
   pthread_exit(NULL);
 }
 
-
 int main(int argc, char* argv[]){
   pthread_t idt;
   for (int i = 0; i < 3; i++) {
