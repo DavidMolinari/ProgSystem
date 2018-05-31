@@ -15,7 +15,7 @@ void* inc(void *arg){
   pthread_mutex_unlock(&mut);
   pthread_exit(NULL);
 }
-
+ETIMEDOUT
 
 void * incv2(void * arg){
 

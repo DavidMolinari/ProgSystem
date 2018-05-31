@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <ctype.h>
 #define handle_error_en(en, msg) \
-        do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
+do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
 pthread_mutex_t mut;
 void *res;
 
@@ -27,10 +27,10 @@ int main(int argc, char* argv[]){
   for( int t=0; t<2; t++ ){
     int s;
     if( s = pthread_create(&threads[t], NULL, th, NULL)== 0){
-    pthread_join( threads[t], (void **)&returnValue);
-    printf("PapaIdFille> %d\n",  *returnValue);
-    free(returnValue);
-  } else handle_error_en(s, "pthread_create");
+      pthread_join( threads[t], (void **)&returnValue);
+      printf("PapaIdFille> %d\n",  *returnValue);
+      free(returnValue);
+    } else handle_error_en(s, "pthread_create");
   }
   printf("fin thr principal\n");
   pthread_exit(NULL); // tue le thread
