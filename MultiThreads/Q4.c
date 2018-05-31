@@ -48,6 +48,8 @@ int main(int argc, char* argv[]){
   pthread_t threads[2];
   for( int t=0; t<2; t++ )
     pthread_create( &threads[t], NULL, incv2, NULL );
+
+
   pthread_mutex_lock(&mut);
   while (v < 2)
     pthread_cond_wait( &cond, &mut );
