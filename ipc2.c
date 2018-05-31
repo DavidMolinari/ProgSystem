@@ -10,6 +10,7 @@
 
 struct sigaction action;
 
+
 int main(int argc, char *argv[]){
   key_t cle;
   struct sembuf operation;
