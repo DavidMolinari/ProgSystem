@@ -9,7 +9,7 @@ void *res;
 void* th(void *arg){
   int *valret;
   valret = (int*)malloc(sizeof(int));
-  printf("pthread_self => %d\n",(int)pthread_self());
+  printf("IdFille => %d\n",(int)pthread_self());
   sleep(2);
   *valret=(int)pthread_self();
   pthread_exit((void *)valret);
@@ -21,9 +21,9 @@ int main(int argc, char* argv[]){
   for (int i = 0; i < 3; i++) {
     pthread_create(&idt, NULL, th, NULL);
     pthread_join( idt, (void **)&returnValue);
-    printf("Pthread_self printed by dad => %d\n",  *returnValue);
+    printf("PapaIdFille> %d\n",  *returnValue);
     free(returnValue);
   }
   printf("fin thr principal\n");
-  pthread_exit(NULL); // tue le thread   
+  pthread_exit(NULL); // tue le thread
 }
