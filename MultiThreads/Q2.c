@@ -4,25 +4,26 @@
 #include <pthread.h>
 
 pthread_mutex_t mut;
+void *res;
 
 void* th(void *arg){
-  pthread_mutex_lock(&mut);
+  int *valret;
+  valret = (int*)malloc(sizeof(int));
+  printf("pthread_self => %d\n",(int)pthread_self());
   sleep(2);
-  printf("ID_FILLE=%d\n",pthread_self());
-  pthread_mutex_unlock(&mut);
-  pthread_exit(NULL);
+  *valret=(int)pthread_self();
+  pthread_exit((void *)valret);
 }
-
 
 int main(int argc, char* argv[]){
   pthread_t idt;
+  int *returnValue;
   for (int i = 0; i < 3; i++) {
-    pthread_mutex_lock(&mut);
-    sleep(3);
     pthread_create(&idt, NULL, th, NULL);
-    pthread_mutex_unlock(&mut);
+    pthread_join( idt, (void **)&returnValue);
+    printf("Pthread_self printed by dad => %d\n",  *returnValue);
+    free(returnValue);
   }
   printf("fin thr principal\n");
-  pthread_exit(NULL);
-
+  pthread_exit(NULL); // tue le thread   
 }

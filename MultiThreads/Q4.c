@@ -4,7 +4,7 @@
 #include <pthread.h>
 
 pthread_mutex_t mut;
-phthread_con_t cond;
+pthread_cond_t cond;
 int v = 0;
 
 void* th(void *arg){
@@ -32,22 +32,47 @@ void* in(void * arg){
   }
 }
 
-int main(int argc, char* argv[]){
-  pthread_t thr;
-  for (int i = 0; i < 2; i++) {
-    pthread_mutex_lock(&mut);
-    printf("i = %d\n",i );
-    pthread_create(&thr, NULL, in, NULL);
-    pthread_mutex_unlock(&mut);
-    sleep(5);
-    pthread_join(thr, NULL);
-  }
-  printf("v = %d\n",v );
-  //pthread_create(&thr, NULL, in, NULL);
+
+void * incv2(void * arg){
+
   /*
-    while(cond)
-      __wait libere mutex
-    unlock
+  Exemple cours :
+  Lock Mutex
+  if condition vraie
+    Fait qqchose
+    Envoi Signal (&cond)
+  Unlock mutex
   */
+  for (int i = 0; i < 4; i++) {
+    pthread_mutex_lock(&mut);
+  if(v < 3) {
+    printf("v++ done\n");
+    v++;
+  }
+  pthread_cond_signal(&cond);
+  pthread_mutex_unlock(&mut);
+  /* code */
+}
+}
+
+int main(int argc, char* argv[]){
+    /*
+    Exemple cours :
+    while(condition inverse)
+    __WAIT
+    unlock mutex
+    */
+  pthread_t threads[2];
+  for( int t=0; t<2; t++ )
+  pthread_create( &threads[t], NULL, incv2, NULL );
+  pthread_mutex_lock(&mut);
+  while (v < 2) {
+    pthread_cond_wait( &cond, &mut );
+  }
+  printf("v=%d\n", v);
+  pthread_mutex_unlock(&mut);
+
+
+
 
 }
