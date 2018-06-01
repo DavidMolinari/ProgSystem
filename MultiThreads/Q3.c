@@ -14,13 +14,14 @@ void* th(void *arg){
 }
 
 int main(int argc, char* argv[]){
-  pthread_t idt;
-  for (int i = 0; i < 3; i++) {
-    pthread_mutex_lock(&mut);
-    sleep(3);
-    pthread_create(&idt, NULL, th, NULL);
-    pthread_mutex_unlock(&mut);
-  }
+  pthread_t idt[3];
+  pthread_mutex_init(&mut); // ne pas oublier
+  pthread_mutex_lock(&mut);
+  for (int i = 0; i < 3; i++)
+    pthread_create(&idt[i], NULL, th, NULL);
+  sleep(3);
+
+  pthread_mutex_unlock(&mut);
   printf("fin thr principal\n");
   pthread_exit(NULL);
 
