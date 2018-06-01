@@ -21,7 +21,6 @@ void* readVal(){
   printf("Valeur à transformer : [%d]\n",val);
 }
 
-
 int modulo(int n){
     if((n%2) == 1) return 1;
     else return 0;
