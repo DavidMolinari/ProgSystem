@@ -61,8 +61,7 @@ void* traverseeCamion(){
 }
 
 
-/*void attendre(double max)
-
+/*
   v =  Poids
 */
 void enterPont(int v){
