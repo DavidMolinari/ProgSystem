@@ -9,37 +9,28 @@
 
 sem_t *ptsema;
 void * fonction(){
-  printf("Fils - Posix TID : %ld\n",pthread_self() );
+  printf("Fils - Posix TID : %ld\n",getpid() );
   sleep(1);
-
-
   sem_wait(ptsema);
-  printf("Debut thread\n" );
+  printf("Debut P\n" );
   sleep(10);
-  printf("fin Thread\n" );
-  pthread_exit(NULL);
+  printf("fin P\n" );
+  exit(0);
 }
-
 int main(int argc, char* argv[]){
 
-
   ptsema = sem_open("/meh", O_CREAT, 0600, 0);
+  pid_t retour;
 
-
-  // sem_init(&ptsema, 0, 0);
-  pthread_t threads[2];
-  pthread_create(&threads[0], NULL, fonction, NULL);
-  pthread_create(&threads[1], NULL, fonction, NULL);
-  printf("Thread Père Posix TID : %ld\n",pthread_self());
-
+  if((retour=fork()) == -1){perror("\nEchec de fork");exit(2);}
+  if((retour=fork()) == -1){perror("\nEchec de fork");exit(2);}
+  if(retour == 0)        fonction();
+  printf("proc Père Posix TID : %ld\n",getpid());
   sleep(5);
   sem_post(ptsema);
   sleep(2);
   sem_post(ptsema);
-
-  for (int i = 0; i < 2; i++)
-    pthread_join(threads[i], NULL);
-
+  for (int i = 0; i < 2; i++) wait(NULL);
   sem_close(ptsema);
   system("ls -l /dev/shm");
   sem_unlink("/meh");

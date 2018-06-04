@@ -24,7 +24,6 @@ int main(int argc, char* argv[]){
   exit(0);
 }
 
-
 void * libere(){
   printf("OK\n");
   return(NULL);
