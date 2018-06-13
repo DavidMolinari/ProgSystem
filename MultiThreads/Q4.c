@@ -15,18 +15,9 @@ void* inc(void *arg){
   pthread_mutex_unlock(&mut);
   pthread_exit(NULL);
 }
-ETIMEDOUT
 
 void * incv2(void * arg){
 
-  /*
-  Exemple cours :
-  Lock Mutex
-  if condition vraie
-  Fait qqchose
-  Envoi Signal (&cond)
-  Unlock mutex
-  */
   for (int i = 0; i < 4; i++) {
     pthread_mutex_lock(&mut);
     if(v < 3) {
@@ -39,16 +30,10 @@ void * incv2(void * arg){
 }
 
 int main(int argc, char* argv[]){
-  /*
-  Exemple cours :
-  while(condition inverse)
-  __WAIT
-  unlock mutex
-  */
+
   pthread_t threads[2];
   for( int t=0; t<2; t++ )
     pthread_create( &threads[t], NULL, incv2, NULL );
-
 
   pthread_mutex_lock(&mut);
   while (v < 2)
